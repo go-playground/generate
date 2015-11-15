@@ -40,6 +40,10 @@ func parseFlags() {
 
 	var s string
 
+	if len(*flagDir) == 0 {
+		panic("**invalid Input Directory")
+	}
+
 	// ENV variable
 	if (*flagDir)[:1] == dollar {
 		s = filepath.Clean(os.Getenv((*flagDir)[1:]))
@@ -49,7 +53,7 @@ func parseFlags() {
 
 	flagDir = &s
 
-	if len(*flagDir) == 0 || *flagDir == "." {
+	if *flagDir == "." {
 		panic("**invalid Input Directoy '" + *flagDir + "'")
 	}
 

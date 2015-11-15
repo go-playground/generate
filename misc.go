@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 )
@@ -11,8 +12,7 @@ func executeCmd(command string, args ...string) {
 	cmd := exec.Command(command, args...)
 	cmdReader, err := cmd.StdoutPipe()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
-		os.Exit(1)
+		log.Fatal(os.Stderr, "Error creating StdoutPipe for Cmd", err)
 	}
 
 	defer cmdReader.Close()
@@ -26,14 +26,12 @@ func executeCmd(command string, args ...string) {
 
 	err = cmd.Start()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
-		os.Exit(1)
+		log.Fatal(os.Stderr, "Error starting Cmd", err)
 	}
 
 	err = cmd.Wait()
 	// go generate command will fail when no generate command find.
 	// if err != nil {
-	// 	fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
-	// 	os.Exit(1)
+	// 	log.Fatal(os.Stderr, "Error waiting for Cmd", err)
 	// }
 }
