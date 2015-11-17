@@ -1,6 +1,8 @@
 Package generate
 ================
 
+[![Build Status](https://semaphoreci.com/api/v1/projects/fb48dccf-14ed-4561-b29f-8c6f5711cca5/606486/badge.svg)](https://semaphoreci.com/joeybloggs/generate)
+[![Go Report Card](http://goreportcard.com/badge/go-playground/generate)](http://goreportcard.com/report/go-playground/generate)
 [![GoDoc](https://godoc.org/github.com/go-playground/generate?status.svg)](https://godoc.org/github.com/go-playground/generate)
 
 Package generate runs go generate recursively on a specified path or environment 
