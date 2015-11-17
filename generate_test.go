@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	. "gopkg.in/go-playground/assert.v1"
@@ -25,6 +27,14 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 
 	// teardown
+}
+
+func getPath() string {
+
+	gopath := os.Getenv("GOPATH")
+
+	return fmt.Sprintf("%s%s", filepath.Clean(gopath), "/src/github.com/go-playground/generate")
+
 }
 
 func TestBadDir(t *testing.T) {
@@ -57,9 +67,7 @@ func TestBadDir(t *testing.T) {
 
 func TestGenerateDir(t *testing.T) {
 
-	pwd, _ := os.Getwd()
-
-	i := pwd
+	i := getPath()
 	flagDir = &i
 
 	run := ""
@@ -67,6 +75,9 @@ func TestGenerateDir(t *testing.T) {
 
 	match := ""
 	flagMatch = &match
+
+	ignore := "/\\."
+	flagIgnore = &ignore
 
 	v := false
 	flagPrintProcessed = &v
@@ -80,34 +91,36 @@ func TestGenerateDir(t *testing.T) {
 	main()
 }
 
-func TestGenerateByGOPATH(t *testing.T) {
+// Uncomment if you want to test fully, but is a heavy operation without nay filters.
+// func TestGenerateByGOPATH(t *testing.T) {
 
-	i := "$GOPATH"
-	flagDir = &i
+// 	i := "$GOPATH"
+// 	flagDir = &i
 
-	run := ""
-	flagRun = &run
+// 	run := ""
+// 	flagRun = &run
 
-	match := ""
-	flagMatch = &match
+// 	match := ""
+// 	flagMatch = &match
+//
+// 	ignore:= "/\\."
+// flagIgnore:= &ignore
 
-	v := false
-	flagPrintProcessed = &v
+// 	v := false
+// 	flagPrintProcessed = &v
 
-	n := false
-	flagPrintSimulate = &n
+// 	n := false
+// 	flagPrintSimulate = &n
 
-	x := false
-	flagPrintExecute = &x
+// 	x := false
+// 	flagPrintExecute = &x
 
-	main()
-}
+// 	main()
+// }
 
 func TestMatchGenerate(t *testing.T) {
 
-	pwd, _ := os.Getwd()
-
-	i := pwd
+	i := getPath()
 	flagDir = &i
 
 	run := ""
@@ -115,6 +128,9 @@ func TestMatchGenerate(t *testing.T) {
 
 	match := "dir"
 	flagMatch = &match
+
+	ignore := "/\\."
+	flagIgnore = &ignore
 
 	v := false
 	flagPrintProcessed = &v
@@ -155,9 +171,7 @@ func TestBadMatchGenerate(t *testing.T) {
 
 func TestIgnoreGenerate(t *testing.T) {
 
-	pwd, _ := os.Getwd()
-
-	i := pwd
+	i := getPath()
 	flagDir = &i
 
 	run := ""
@@ -166,7 +180,7 @@ func TestIgnoreGenerate(t *testing.T) {
 	match := ""
 	flagMatch = &match
 
-	ignore := "generate"
+	ignore := "/\\.|generate"
 	flagIgnore = &ignore
 
 	v := false
@@ -211,9 +225,7 @@ func TestBadIgnoreGenerate(t *testing.T) {
 
 func TestGenerateArgs(t *testing.T) {
 
-	pwd, _ := os.Getwd()
-
-	i := pwd
+	i := getPath()
 	flagDir = &i
 
 	run := "statics.*"
@@ -222,7 +234,7 @@ func TestGenerateArgs(t *testing.T) {
 	match := ""
 	flagMatch = &match
 
-	ignore := ""
+	ignore := "/\\."
 	flagIgnore = &ignore
 
 	v := true
