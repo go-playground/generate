@@ -31,7 +31,10 @@ func executeCmd(command string, args ...string) {
 
 	err = cmd.Wait()
 	// go generate command will fail when no generate command find.
-	// if err != nil {
-	// 	log.Fatal(os.Stderr, "Error waiting for Cmd", err)
-	// }
+	if err != nil {
+		if err.Error() != "exit status 1" {
+			log.Println(err)
+		}
+		// log.Fatal(os.Stderr, "Error waiting for Cmd", err)
+	}
 }
