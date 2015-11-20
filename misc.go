@@ -10,17 +10,32 @@ import (
 
 func executeCmd(command string, args ...string) {
 	cmd := exec.Command(command, args...)
-	cmdReader, err := cmd.StdoutPipe()
+
+	stdOut, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Fatal(os.Stderr, "Error creating StdoutPipe for Cmd", err)
 	}
 
-	defer cmdReader.Close()
+	defer stdOut.Close()
 
-	scanner := bufio.NewScanner(cmdReader)
+	scanner := bufio.NewScanner(stdOut)
 	go func() {
 		for scanner.Scan() {
 			fmt.Printf("%s\n", scanner.Text())
+		}
+	}()
+
+	stdErr, err := cmd.StderrPipe()
+	if err != nil {
+		log.Fatal(os.Stderr, "Error creating StderrPipe for Cmd", err)
+	}
+
+	defer stdErr.Close()
+
+	stdErrScanner := bufio.NewScanner(stdErr)
+	go func() {
+		for stdErrScanner.Scan() {
+			fmt.Printf("%s\n", stdErrScanner.Text())
 		}
 	}()
 
