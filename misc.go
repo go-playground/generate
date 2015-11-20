@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func executeCmd(command string, args ...string) {
@@ -35,7 +36,12 @@ func executeCmd(command string, args ...string) {
 	stdErrScanner := bufio.NewScanner(stdErr)
 	go func() {
 		for stdErrScanner.Scan() {
-			fmt.Printf("%s\n", stdErrScanner.Text())
+
+			txt := stdErrScanner.Text()
+
+			if !strings.Contains(txt, "no buildable Go source files in") {
+				fmt.Printf("%s\n", txt)
+			}
 		}
 	}()
 
