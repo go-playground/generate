@@ -31,7 +31,7 @@ or to update
 
 	go get -u github.com/go-playground/generate
 
-Then import the validator package into your own code.
+Then import the generate package into your own code.
 
 	import "github.com/go-playground/generate"
 
