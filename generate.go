@@ -12,7 +12,6 @@ import (
 const (
 	gopath = "$GOPATH"
 	runArg = "run=%s"
-	dollar = "$"
 )
 
 var (
@@ -38,19 +37,11 @@ func parseFlags() {
 
 	flag.Parse()
 
-	var s string
-
 	if len(*flagDir) == 0 {
 		panic("**invalid Input Directory")
 	}
 
-	// ENV variable
-	if (*flagDir)[:1] == dollar {
-		s = filepath.Clean(os.Getenv((*flagDir)[1:]))
-	} else {
-		s = filepath.Clean(*flagDir)
-	}
-
+	s := filepath.Clean(os.ExpandEnv(*flagDir))
 	flagDir = &s
 
 	if *flagDir == "." {
@@ -98,7 +89,7 @@ func generate() {
 
 	walker := func(path string, info os.FileInfo, err error) error {
 
-		if !info.IsDir() {
+		if info == nil || !info.IsDir() {
 			return nil
 		}
 
